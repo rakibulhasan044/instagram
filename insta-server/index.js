@@ -24,7 +24,7 @@ app.use(cookiePerser());
 app.use(urlencoded({extended: true}));
 
 const corsOption = {
-    origin: 'http//localhost:5173',
+    origin: 'http://localhost:5173',
     credentials: true,
 }
 
