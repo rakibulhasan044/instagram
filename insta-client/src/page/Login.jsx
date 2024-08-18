@@ -4,19 +4,18 @@ import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
-import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { FaSpinner } from "react-icons/fa";
 
-const Signup = () => {
+const Login = () => {
   const [input, setInput] = useState({
-    username: "",
     email: "",
     password: "",
   });
 
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -28,7 +27,7 @@ const Signup = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/user/register`,
+        `${import.meta.env.VITE_API_URL}/user/login`,
         input,
         {
           headers: {
@@ -62,18 +61,8 @@ const Signup = () => {
         <div>
           <h1 className="text-center font-bold text-xl">Logo</h1>
           <p className="text-sm text-center">
-            Signup to see photos and videos from your friends
+            Login to see photos and videos from your friends
           </p>
-        </div>
-        <div>
-          <Label>Username</Label>
-          <Input
-            type="text"
-            name="username"
-            value={input.username}
-            onChange={changeEventHandler}
-            className=" focus-visible:ring-transparent my-2"
-          ></Input>
         </div>
         <div>
           <Label>Email</Label>
@@ -102,12 +91,18 @@ const Signup = () => {
             </Loader2>
           </Button>
         ) : (
-          <Button type="submit">Singup</Button>
+          <Button type="submit">Login</Button>
         )}
-        <span className="text-center">Already have an account? <Link to='/login' className="text-blue-600">Login</Link></span>
+
+        <span className="text-center">
+          DO not have an account?{" "}
+          <Link to="/signup" className="text-blue-600">
+            Register here
+          </Link>
+        </span>
       </form>
     </div>
   );
 };
 
-export default Signup;
+export default Login;
