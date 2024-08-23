@@ -17,7 +17,14 @@ export const addNewPost = async (req, res) => {
             })
         }
 
-        const optimizedImageBuffer = await sharp(image.buffer).resize({width: 700, height: 888}).toFormat('jpeg', {quality:80}).toBuffer();
+        const optimizedImageBuffer = await sharp(image.buffer).resize({height: 950}).toFormat('webp', {quality:100, chromaSubsampling: '4:2:0'}).toBuffer();
+        if (optimizedImageBuffer.length > 1 * 1024 * 1024) { // 1MB in bytes
+            // throw new Error('File size exceeds 1MB');
+            return res.status(400).json({
+                message: "File size exceeds 1MB",
+                success: false
+            })
+        }
 
         const fileUri = `data:image/jpeg;base64,${optimizedImageBuffer.toString('base64')}`;
         const cloudResponse = await cloudinary.uploader.upload(fileUri)
@@ -46,11 +53,11 @@ export const addNewPost = async (req, res) => {
 
 export const getAllPost = async (req, res) => {
     try {
-        const post = await Post.find().sort({createdAt: -1})
-        .populate({path: 'author', select: 'username, profilePicture'})
-        .populate({path: 'comments', sort: {createdAt: -1}, populate: {path: 'author', select: 'username, profilePicture'} })
+        const posts = await Post.find().sort({createdAt: -1})
+        .populate({path: 'author', select: 'username profilePicture'})
+        .populate({path: 'comments', sort: {createdAt: -1}, populate: {path: 'author', select: 'username profilePicture'} })
         return res.status(200).json({
-            post,
+            posts,
             success: true,
         })
     } catch (error) {

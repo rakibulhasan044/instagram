@@ -4,8 +4,8 @@ import { Outlet } from "react-router-dom";
 const MainLayout = () => {
     return (
         <div className="flex">
-            <LeftSidebar />
-            <div>
+            <LeftSidebar className='' />
+            <div className="w-full">
                 <Outlet />
             </div>
         </div>
